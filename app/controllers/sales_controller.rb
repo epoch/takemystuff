@@ -13,4 +13,25 @@ class SalesController < ApplicationController
   def show
     @sale = Sale.find(params[:id])
   end
+
+  def destroy
+    sale = Sale.find(params[:id])
+    sale.destroy
+    redirect_to '/'
+  end
+
+  def edit
+    @sale = Sale.find(params[:id])
+  end
+
+  def update
+    sale = Sale.find(params[:id])
+    sale.description = params[:description]
+    sale.save
+    redirect_to "/sales/#{sale.id}"
+  end
+
+  def index
+    @sales = Sale.all
+  end
 end
