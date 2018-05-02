@@ -5,6 +5,7 @@ class SalesController < ApplicationController
   def create
     sale = Sale.new
     sale.description = params[:description]
+    sale.address = params[:address]
     sale.user_id = User.first.id # fix later
     sale.save
     redirect_to "/sales/#{ sale.id }"
@@ -27,6 +28,7 @@ class SalesController < ApplicationController
   def update
     sale = Sale.find(params[:id])
     sale.description = params[:description]
+    sale.address = params[:address]
     sale.save
     redirect_to "/sales/#{sale.id}"
   end

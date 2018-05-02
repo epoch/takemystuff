@@ -1,4 +1,10 @@
-<%= @sale.description %>
+<p><%= @sale.description %></p>
+
+<p><%= @sale.address %></p>
+
+<div class="map" style="height: 200px;">
+
+</div>
 
 <form action="/sales/<%= @sale.id %>" method="post">
    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -7,3 +13,28 @@
 </form>
 
 <a href="/sales/<%= @sale.id%>/edit">edit</a>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk">
+</script>
+<script>
+  function initMap() {
+    var uluru = {lat: -37.8185548, lng: 144.95907550000004};
+    var map = new google.maps.Map(document.querySelector('.map'), {
+      zoom: 11,
+      center: uluru
+    });
+    var marker = new google.maps.Marker({
+      position: uluru,
+      map: map
+    });
+  }
+
+  initMap();
+
+  var geocoder = new google.maps.Geocoder();
+
+  geocoder.geocode({ address: '45 william street melbourne australia' }, function(results, status) {
+    console.log(results);
+    // debugger
+  });
+</script>
