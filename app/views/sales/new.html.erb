@@ -1,8 +1,17 @@
-<form action="/sales" method="post">
-  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+<%# form helpers - functions that generate html %>
+
+
+<%= form_for @sale do |f| %>
+
   <label for="">description</label>
-  <textarea name="description"></textarea>
+  <%= f.text_field :description %>
+
   <label for="">address</label>
-  <input type="text" name="address">
+  <%= f.text_field :address %>
+
+  <label for="">images</label>
+  <%= f.file_field :images, multiple: true %>
+
   <button>create sale</button>
-</form>
+
+<% end %>

@@ -1,11 +1,18 @@
 class SalesController < ApplicationController
   def new
+    @sale = Sale.new
   end
 
   def create
-    sale = Sale.new
-    sale.description = params[:description]
-    sale.address = params[:address]
+    # params mass assignment & strong params
+    # sale = Sale.new(params)
+    # sale.user_id = User.first.id
+    # sale.save
+
+    sale = Sale.new(sale_params)
+    # sale.description = params[:description]
+    # sale.address = params[:address]
+    # sale.images = params[:sale][:images]
     sale.user_id = User.first.id # fix later
     sale.save
     redirect_to "/sales/#{ sale.id }"
@@ -27,8 +34,10 @@ class SalesController < ApplicationController
 
   def update
     sale = Sale.find(params[:id])
-    sale.description = params[:description]
-    sale.address = params[:address]
+    sale.update(sale_params)
+    # sale.description = params[:description]
+    # sale.address = params[:address]
+    # sale.images = params[:images]
     sale.save
     redirect_to "/sales/#{sale.id}"
   end
@@ -36,4 +45,9 @@ class SalesController < ApplicationController
   def index
     @sales = Sale.all
   end
+
+  def sale_params
+    params.require(:sale).permit(:description, :address, {images: []})
+  end
+
 end

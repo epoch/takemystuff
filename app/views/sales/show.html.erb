@@ -2,6 +2,10 @@
 
 <p><%= @sale.address %></p>
 
+<% @sale.images.each do |image| %>
+  <img src="<%= image.url %>" alt="">
+<% end %>
+
 <div class="map" style="height: 200px;">
 
 </div>
@@ -14,27 +18,35 @@
 
 <a href="/sales/<%= @sale.id%>/edit">edit</a>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk">
-</script>
 <script>
   function initMap() {
-    var uluru = {lat: -37.8185548, lng: 144.95907550000004};
-    var map = new google.maps.Map(document.querySelector('.map'), {
-      zoom: 11,
-      center: uluru
+
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({ address: '<%= @sale.address %>' }, function(results, status) {
+
+      if (status == 'OK') {
+        var latLng = results[0].geometry.location;
+
+        var map = new google.maps.Map(document.querySelector('.map'), {
+          zoom: 11,
+          center: latLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map
+        });
+      } else {
+        console.log('failed')
+      }
+
     });
-    var marker = new google.maps.Marker({
-      position: uluru,
-      map: map
-    });
+
   }
 
-  initMap();
+  // initMap();
 
-  var geocoder = new google.maps.Geocoder();
-
-  geocoder.geocode({ address: '45 william street melbourne australia' }, function(results, status) {
-    console.log(results);
-    // debugger
-  });
+</script>
+<script data-turbolinks-eval="false" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk&callback=initMap">
 </script>
